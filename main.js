@@ -228,7 +228,7 @@ class Calendar extends React.Component {
       dateFns.differenceInWeeks(this.state.selectedDate, start) :
       dateFns.differenceInMonths(this.state.selectedDate, start);
     setTimeout(() => 
-      this.scrollView.scrollTo({
+      this.scrollView && this.scrollView.scrollTo({
         x: Math.round(diff) * this.state.viewPortWidth,
         animated: this.state.animatedScrollTo
       })
@@ -241,7 +241,7 @@ class Calendar extends React.Component {
   }
 
   componentDidUpdate() {
-    if (this.scrollView && !this.state.scrolledToDate) {
+    if (this.state.scrollable && this.scrollView && !this.state.scrolledToDate) {
       this.scrollTo()
     }
   }
@@ -323,7 +323,9 @@ class Calendar extends React.Component {
           const width = event.nativeEvent.layout.width;
           if (this.state.viewPortWidth !== width) {
             this.setState({ viewPortWidth: width })
-            this.scrollTo()
+            if (this.state.scrollable){
+              this.scrollTo()
+            }
           }
         }}>
         <Animated.View style={[styles.calendar, panStyle]}>
