@@ -1,0 +1,33 @@
+{
+  "name": "react-native-inline-calendar",
+  "version": "0.1.0",
+  "description": "React Native component that renders selectable monthly calendar or week stripe with agenda for selected date",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "react",
+    "react-native",
+    "calendar",
+    "agenda",
+    "stripe",
+    "datepicker"
+  ],
+  "author": "ger_eXciTer",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gereXciTer/react-native-inline-calendar.git"
+  },
+  "bugs": {
+    "url": "https://github.com/gereXciTer/react-native-inline-calendar/issues"
+  },
+  "homepage": "https://github.com/gereXciTer/react-native-inline-calendar#readme",
+  "dependencies": {
+    "date-fns": "^1.29.0",
+    "prop-types": "^15.6.2",
+    "react": "^16.6.1",
+    "react-native": "^0.57.4"
+  }
+}
