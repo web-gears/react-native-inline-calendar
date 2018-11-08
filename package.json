@@ -18,12 +18,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/gereXciTer/react-native-inline-calendar.git"
+    "url": "git+https://github.com/web-gears/react-native-inline-calendar.git"
   },
   "bugs": {
-    "url": "https://github.com/gereXciTer/react-native-inline-calendar/issues"
+    "url": "https://github.com/web-gears/react-native-inline-calendar/issues"
   },
-  "homepage": "https://github.com/gereXciTer/react-native-inline-calendar#readme",
+  "homepage": "https://github.com/web-gears/react-native-inline-calendar#readme",
   "dependencies": {
     "date-fns": "^1.29.0",
     "prop-types": "^15.6.2",
