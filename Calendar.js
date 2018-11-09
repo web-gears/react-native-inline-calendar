@@ -16,8 +16,8 @@ class Calendar extends React.Component {
       //Configurable through props:
       weekMode: props.weekMode || false,
       scrollable: props.scrollable || false,
-      selectedDate: this.props.initialDate || new Date(),
-      currentDate: this.props.initialDate || new Date(),
+      selectedDate: props.initialDate || new Date(),
+      currentDate: props.initialDate || new Date(),
     }
 
     // Initialize PanResponder with move handling
@@ -76,7 +76,7 @@ class Calendar extends React.Component {
   }
 
   static getDerivedStateFromProps(props, state) {
-    const ignoreProps = ['scrollable', 'weekMode', 'styles']
+    const ignoreProps = ['scrollable', 'weekMode', 'styles', 'currentMonth', 'currentDate', 'selectedDate']
     if (props.styles) {
       styles = props.styles
     }
@@ -238,7 +238,7 @@ class Calendar extends React.Component {
       dateFns.addMonths(start, diff)
     const currentPeriodEnd = this.state.weekMode ?
       dateFns.endOfWeek(currentPeriodStart) :
-      dateFns.endOfMonth(currentPeriodStart)
+      dateFns.endOfWeek(dateFns.subWeeks(dateFns.addMonths(currentPeriodStart, 1), 1))
     const currentMonth = this.state.selectedDate >= currentPeriodStart && this.state.selectedDate <= currentPeriodEnd ?
       this.state.selectedDate :
       dateFns.addDays(currentPeriodStart, Math.round(dateFns.differenceInCalendarDays(currentPeriodEnd, currentPeriodStart) / 2))
