@@ -5,6 +5,8 @@ import { View, Text, Animated, TouchableOpacity, TouchableHighlight, ScrollView,
 
 import styles from './calendarStyles'
 
+import { defaultEmptyListRenderer, defaultItemRenderer } from './helpers'
+
 class Calendar extends React.Component {
   constructor(props) {
     super(props)
@@ -14,22 +16,8 @@ class Calendar extends React.Component {
       //Configurable through props:
       weekMode: props.weekMode || false,
       scrollable: props.scrollable || false,
-      weekStartsOn: 0,
-      showAgenda: true,
-      scrollByOne: true,
-      animatedScrollTo: true,
-      hideHeader: false,
-      hideWeekDays: false,
-      showArrows: true,
-      minMonthsToScroll: 0,
-      maxMonthsToScroll: 1,
-      minDate: new Date(),
-      headerDateFormat: 'MMMM YYYY',
       selectedDate: this.props.initialDate || new Date(),
       currentDate: this.props.initialDate || new Date(),
-      currentMonth: new Date(),
-      items: {},
-      dataUpdated: null
     }
 
     // Initialize PanResponder with move handling
@@ -67,11 +55,31 @@ class Calendar extends React.Component {
     this.getCurrentMonthByOffset = this.getCurrentMonthByOffset.bind(this)
   }
 
+  static defaultProps = {
+    weekStartsOn: 0,
+    showAgenda: true,
+    scrollByOne: true,
+    animatedScrollTo: true,
+    hideHeader: false,
+    hideWeekDays: false,
+    showArrows: true,
+    minMonthsToScroll: 0,
+    maxMonthsToScroll: 1,
+    minDate: new Date(),
+    headerDateFormat: 'MMMM YYYY',
+    initialDate: new Date(),
+    currentMonth: new Date(),
+    items: {},
+    dataUpdated: null,
+    itemClickHandler: () => {},
+    onDateSelect: () => {}
+  }
+
   static getDerivedStateFromProps(props, state) {
     const ignoreProps = ['scrollable', 'weekMode']
     const newState = {...state}
-    Object.keys(state).forEach(key => {
-      if(!ignoreProps.includes(key) && props[key] !== undefined)
+    Object.keys(props).forEach(key => {
+      if(!ignoreProps.includes(key))
         newState[key] = props[key]
     })
     return newState
@@ -173,52 +181,15 @@ class Calendar extends React.Component {
 
   onDateSelect(date) {
     this.setState({ selectedDate: date, currentMonth: date})
-    if (this.props.onDateSelect) {
-      this.props.onDateSelect(date)
-    }
-  }
-
-  itemRenderer(dayEvents, selectedDate) {
-    const itemStyles = {
-      listItem: {
-        flexDirection: 'row',
-        paddingVertical: 10,
-        borderBottomColor: '#efefef',
-        borderBottomWidth: 1
-      },
-      time: {
-        paddingHorizontal: 5,
-        color: '#ccc'
-      }
-    }
-    const timeFormat = 'hh:mm'
-    return dayEvents.items && dayEvents.items.map((item, i) => {
-      const timeStart = dateFns.setMinutes(dateFns.setHours(selectedDate, item.timeStart.hour), item.timeStart.minute)
-      const timeEnd = dateFns.setMinutes(dateFns.setHours(selectedDate, item.timeEnd.hour), item.timeEnd.minute)
-      return (
-      <TouchableOpacity key={i} onPress={() => this.props.itemClickHandler(item, selectedDate)}>
-        <View style={itemStyles.listItem}>
-          <Text style={itemStyles.time}>
-            {dateFns.format(timeStart, timeFormat)} - {dateFns.format(timeEnd, timeFormat)}
-          </Text>
-          <Text>{item.title}</Text>
-          <Text>{item.description}</Text>
-        </View>
-      </TouchableOpacity>
-      )}
-    )
-  }
-
-  emptyListRenderer(day) {
-    return <Text>No items for this date ({dateFns.format(day, 'MM/DD/YYYY')})</Text>
+    this.props.onDateSelect(date)
   }
 
   renderItems() {
     const { selectedDate, items } = this.state
-    const renderer = this.props.itemRenderer || this.itemRenderer.bind(this)
-    const emptyListRenderer = this.props.emptyListRenderer || this.emptyListRenderer
+    const renderer = this.props.itemRenderer || defaultItemRenderer
+    const emptyListRenderer = this.props.emptyListRenderer || defaultEmptyListRenderer
     const dayEvents = items[dateFns.format(selectedDate, 'YYYY-MM-DD')]
-    return dayEvents && dayEvents.items.length ? renderer(dayEvents, selectedDate) : emptyListRenderer(selectedDate)
+    return dayEvents && dayEvents.items.length ? renderer(dayEvents, selectedDate, this.props.itemClickHandler) : emptyListRenderer(selectedDate)
   }
 
   scrollTo(){
@@ -393,6 +364,7 @@ Calendar.propTypes = {
   minMonthsToScroll: PropTypes.number,
   maxMonthsToScroll: PropTypes.number,
   minDate: PropTypes.object,
+  initialDate: PropTypes.object,
   headerDateFormat: PropTypes.string,
   selectedDate: PropTypes.object,
   currentDate: PropTypes.object,
