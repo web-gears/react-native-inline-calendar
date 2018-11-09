@@ -47,6 +47,7 @@ You can see usage example in this [Expo demo](https://snack.expo.io/@ger_exciter
 | itemRenderer | function     | defaultItemRenderer | agenda item renderer |
 | itemClickHandler | function | void | agenda item click handler |
 | onDateSelect | function     | void | date select handler, doesn't prevent rendering date's agenda, runs after selected date state is updated |
+| styles | object             | defaultStyles | custom styles that can be applied to the component. Import defaultStyles for the reference |
 
 Agenda items data format:
 ```javascript

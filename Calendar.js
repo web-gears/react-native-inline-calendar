@@ -3,9 +3,9 @@ import PropTypes from 'prop-types'
 import dateFns from 'date-fns';
 import { View, Text, Animated, TouchableOpacity, TouchableHighlight, ScrollView, Dimensions, PanResponder, Platform } from 'react-native'
 
-import styles from './calendarStyles'
-
+import defaultStyles from './calendarStyles'
 import { defaultEmptyListRenderer, defaultItemRenderer } from './helpers'
+let styles = defaultStyles
 
 class Calendar extends React.Component {
   constructor(props) {
@@ -76,7 +76,10 @@ class Calendar extends React.Component {
   }
 
   static getDerivedStateFromProps(props, state) {
-    const ignoreProps = ['scrollable', 'weekMode']
+    const ignoreProps = ['scrollable', 'weekMode', 'styles']
+    if (props.styles) {
+      styles = props.styles
+    }
     const newState = {...state}
     Object.keys(props).forEach(key => {
       if(!ignoreProps.includes(key))
@@ -373,7 +376,8 @@ Calendar.propTypes = {
   emptyListRenderer: PropTypes.func,
   itemRenderer: PropTypes.func,
   itemClickHandler: PropTypes.func,
-  onDateSelect: PropTypes.func
+  onDateSelect: PropTypes.func,
+  styles: PropTypes.object,
 }
 
 export default Calendar;
