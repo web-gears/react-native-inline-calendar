@@ -13,7 +13,7 @@ npm install react-native-inline-calendar --save
 
 Then add to your application as
 ```javascript
-import Calendar from react-native-inline-calendar
+import { Calendar } from react-native-inline-calendar
 ```
 
 # Usage
