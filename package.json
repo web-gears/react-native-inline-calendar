@@ -1,6 +1,6 @@
 {
   "name": "react-native-inline-calendar",
-  "version": "0.1.4",
+  "version": "0.2.0",
   "description": "React Native component that renders selectable monthly calendar or week stripe with agenda for selected date",
   "main": "main.js",
   "scripts": {
