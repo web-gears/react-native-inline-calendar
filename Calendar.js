@@ -207,10 +207,12 @@ class Calendar extends React.Component {
         animated: this.state.animatedScrollTo
       })
     , 1) // fix for Android - 'scrollview can scroll only when its size < content's size 2'
+    const viewPortWidth = Dimensions.get('window').width
     this.setState({ 
       scrolledToDate: true,
+      viewPortWidth,
       animatedScrollTo: false,
-      currentMonth: this.getCurrentMonthByOffset(Math.round(diff) * this.state.viewPortWidth)
+      currentMonth: this.getCurrentMonthByOffset(Math.round(diff) * viewPortWidth)
     })
   }
 
