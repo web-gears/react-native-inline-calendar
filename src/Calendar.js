@@ -345,7 +345,7 @@ class Calendar extends React.Component {
             </Animated.View>
           }
         </Animated.View>
-        {this.state.items &&
+        {showAgenda && this.state.items &&
           <Animated.View style={[styles.agendaWrapper, panStyle]}>
             {this.renderItems()}
           </Animated.View>
