@@ -42,6 +42,7 @@ class Calendar extends React.Component {
     });
     this.state.pan.setValue({x: 0, y: 0})
     
+    this.onLayout = this.onLayout.bind(this)
     this.renderHeader = this.renderHeader.bind(this)
     this.prevMonth = this.prevMonth.bind(this)
     this.nextMonth = this.nextMonth.bind(this)
@@ -140,7 +141,7 @@ class Calendar extends React.Component {
     while (day <= endDate) {
       for (let i = 0; i < 7; i++) {
         formattedDate = dateFns.format(day, dateFormat);
-        const cloneDay = day;
+        const cloneDay = dateFns.parse(day);
         const restrictedDate = minDateStart && dateFns.isBefore(day, minDateStart);
         let style = [styles.day]
         let textStyle = [styles.dayText]
@@ -155,7 +156,7 @@ class Calendar extends React.Component {
         const itemsForTheDay = items[dateFns.format(day, 'YYYY-MM-DD')];
         days.push(
           <TouchableOpacity style={style} key={i} activeOpacity={restrictedDate ? 1 : 0.2}
-            onPress={restrictedDate ? null : () => this.onDateSelect(dateFns.parse(cloneDay))}
+            onPress={restrictedDate ? null : this.onDateSelect.bind(this, cloneDay)}
           >
             <View style={styles.dayTextWrapper}>
               <Text style={textStyle}>{formattedDate}</Text>
@@ -271,6 +272,16 @@ class Calendar extends React.Component {
     return this.state.weekMode ? this.weekCalendar : this.monthCalendar;
   }
 
+  onLayout(event) {
+    const width = event.nativeEvent.layout.width;
+    if (this.state.viewPortWidth !== width) {
+      this.setState({ viewPortWidth: width })
+      if (this.state.scrollable){
+        this.scrollTo()
+      }
+    }
+  }
+
   render() {
     const { minMonthsToScroll, maxMonthsToScroll, weekMode, scrollByOne, showAgenda, currentDate, currentMonth } = this.state
     const panStyle = {
@@ -295,15 +306,7 @@ class Calendar extends React.Component {
       }
     }
     return (
-      <View style={[styles.calendarWrapper, showAgenda && styles.calendarWrapperAgenda]} onLayout={(event) => {
-          const width = event.nativeEvent.layout.width;
-          if (this.state.viewPortWidth !== width) {
-            this.setState({ viewPortWidth: width })
-            if (this.state.scrollable){
-              this.scrollTo()
-            }
-          }
-        }}>
+      <View style={[styles.calendarWrapper, showAgenda && styles.calendarWrapperAgenda]} onLayout={this.onLayout}>
         <Animated.View style={[styles.calendar, panStyle]}>
           {this.state.scrollable ?
             <React.Fragment>
