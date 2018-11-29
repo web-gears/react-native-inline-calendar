@@ -6,8 +6,135 @@ import { View, Text, Animated, TouchableOpacity, TouchableHighlight, ScrollView,
 import defaultStyles from './calendarStyles'
 import { defaultEmptyListRenderer, defaultItemRenderer } from './helpers'
 let styles = defaultStyles
-
+/**
+ * @author [Volodymyr Hartsev](https://github.com/gerexciter)
+ */
 class Calendar extends React.Component {
+  static propTypes = {
+    /**
+     * Week mode on/off
+     * @default false
+     */
+    weekMode: PropTypes.bool,
+    /**
+     * Disable week toggle ability
+     * @default false
+     */
+    disableWeekToggle: PropTypes.bool,
+    /**
+     * Enable horizontal scroll
+     * @default false
+     */
+    scrollable: PropTypes.bool,
+    /**
+     * Number of week day for the week start, i.e. Monday - 1, Sunday - 0
+     * @default 0
+     */
+    weekStartsOn: PropTypes.number,
+    /**
+     * Render agenda list under the calendar or not
+     * @default true
+     */
+    showAgenda: PropTypes.bool,
+    /**
+     * Enable scroll restriction by limiting horizontal scrolling to one screen at a time
+     * @default true
+     */
+    scrollByOne: PropTypes.bool,
+    /**
+     * animate automatic scroll to surrent date
+     * @default true
+     */
+    animatedScrollTo: PropTypes.bool,
+    /**
+     * Hide header with current month
+     * @default false
+     */
+    hideHeader: PropTypes.bool,
+    /**
+     * Hide week days names
+     * @default false
+     */
+    hideWeekDays: PropTypes.bool,
+    /**
+     * Show navigation arrows, forced to false when scrollable
+     * @default true
+     */
+    showArrows: PropTypes.bool,
+    /**
+     * Number of months visible in the past
+     * @default 0
+     */
+    minMonthsToScroll: PropTypes.number,
+    /**
+     * Number of future months visible
+     * @default 1
+     */
+    maxMonthsToScroll: PropTypes.number,
+    /**
+     * Disable dates prior to this one
+     * @default now
+     */
+    minDate: PropTypes.object,
+    /**
+     * Initial date for quick calendar initialization
+     * @default now
+     */
+    initialDate: PropTypes.object,
+    /**
+     * Date format for the header
+     * @default 'MMMM YYYY'
+     */
+    headerDateFormat: PropTypes.string,
+    /**
+     * Initially selected date
+     * @default initialDate
+     */
+    selectedDate: PropTypes.object,
+    /**
+     * Current date to render calendar for
+     * @default initialDate
+     */
+    currentDate: PropTypes.object,
+    /**
+     * Object map of agenda items where key is formatted date string 'YYYY-MM-DD'
+     * @type Object
+     * @default {}
+     */
+    items: PropTypes.object,
+    /**
+     * Timestamp of last agenda items update. Changing this parameter re-renders the calendar
+     */
+    dataUpdated: PropTypes.number,
+    /**
+     * Renderer for ampty list placeholder
+     * @default defaultEmptyListRenderer
+     */
+    emptyListRenderer: PropTypes.func,
+    /**
+     * Renderer for agenda items for selected date
+     * @param dayEvents
+     * @param selectedDate
+     * @param itemClickHandler
+     * @default defaultItemRenderer
+     */
+    itemRenderer: PropTypes.func,
+    /**
+     * Event handler for item tap event, passed to itemRenderer
+     */
+    itemClickHandler: PropTypes.func,
+    /**
+     * Event handler for date select. Can handle optional actions.
+     * @param date
+     */
+    onDateSelect: PropTypes.func,
+    /**
+     * Custom styles for calendar
+     * @default defaultStyles
+     */
+    styles: PropTypes.object,
+  }
+
   constructor(props) {
     super(props)
     this.state = {
@@ -356,33 +483,6 @@ class Calendar extends React.Component {
       </View>
     )
   }
-}
-
-Calendar.propTypes = {
-  weekMode: PropTypes.bool,
-  disableWeekToggle: PropTypes.bool,
-  scrollable: PropTypes.bool,
-  weekStartsOn: PropTypes.number,
-  showAgenda: PropTypes.bool,
-  scrollByOne: PropTypes.bool,
-  animatedScrollTo: PropTypes.bool,
-  hideHeader: PropTypes.bool,
-  hideWeekDays: PropTypes.bool,
-  showArrows: PropTypes.bool,
-  minMonthsToScroll: PropTypes.number,
-  maxMonthsToScroll: PropTypes.number,
-  minDate: PropTypes.object,
-  initialDate: PropTypes.object,
-  headerDateFormat: PropTypes.string,
-  selectedDate: PropTypes.object,
-  currentDate: PropTypes.object,
-  items: PropTypes.object,
-  dataUpdated: PropTypes.number,
-  emptyListRenderer: PropTypes.func,
-  itemRenderer: PropTypes.func,
-  itemClickHandler: PropTypes.func,
-  onDateSelect: PropTypes.func,
-  styles: PropTypes.object,
 }
 
 export default Calendar;
