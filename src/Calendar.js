@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types'
-import dateFns from 'date-fns';
+import * as dateFns from 'date-fns';
 import { View, Text, Animated, TouchableOpacity, TouchableHighlight, ScrollView, Dimensions, PanResponder, Platform } from 'react-native'
 
 import defaultStyles from './calendarStyles'
@@ -97,7 +97,7 @@ class Calendar extends React.Component {
      */
     currentDate: PropTypes.object,
     /**
-     * Object map of agenda items where key is formatted date string 'YYYY-MM-DD'
+     * Object map of agenda items where key is formatted date string 'yyyy-MM-dd'
      * @type Object
      * @default {}
      */
@@ -194,7 +194,7 @@ class Calendar extends React.Component {
     minMonthsToScroll: 0,
     maxMonthsToScroll: 1,
     minDate: new Date(),
-    headerDateFormat: 'MMMM YYYY',
+    headerDateFormat: 'MMMM yyyy',
     initialDate: new Date(),
     currentMonth: new Date(),
     items: {},
@@ -245,7 +245,7 @@ class Calendar extends React.Component {
     for (let i = 0; i < 7; i++) {
       days.push(
         <Text key={i} style={styles.weekDay}>
-          {dateFns.format(dateFns.addDays(startDate, i), 'dd')}
+          {dateFns.format(dateFns.addDays(startDate, i), 'EEE')}
         </Text>
       );
     }
@@ -259,7 +259,7 @@ class Calendar extends React.Component {
     const monthEnd = dateFns.endOfMonth(monthStart);
     const startDate = dateFns.startOfWeek(monthStart, { weekStartsOn: this.state.weekStartsOn });
     const endDate = this.state.weekMode ? dateFns.endOfWeek(currentDate) : dateFns.endOfWeek(monthEnd);
-    const dateFormat = 'D';
+    const dateFormat = 'd';
     const rows = [];
     let days = [];
     let day = this.state.weekMode ? dateFns.startOfWeek(currentDate, { weekStartsOn: this.state.weekStartsOn }) : startDate;
@@ -268,7 +268,7 @@ class Calendar extends React.Component {
     while (day <= endDate) {
       for (let i = 0; i < 7; i++) {
         formattedDate = dateFns.format(day, dateFormat);
-        const cloneDay = dateFns.parse(day);
+        const cloneDay = new Date(day);
         const restrictedDate = minDateStart && dateFns.isBefore(day, minDateStart);
         let style = [styles.day]
         let textStyle = [styles.dayText]
@@ -280,7 +280,7 @@ class Calendar extends React.Component {
           style.push(styles.daySelected)
           textStyle.push(styles.daySelectedText)
         }
-        const itemsForTheDay = items[dateFns.format(day, 'YYYY-MM-DD')];
+        const itemsForTheDay = items[dateFns.format(day, 'yyyy-MM-dd')];
         days.push(
           <TouchableOpacity style={style} key={i} activeOpacity={restrictedDate ? 1 : 0.2}
             onPress={restrictedDate ? null : this.onDateSelect.bind(this, cloneDay)}
@@ -319,7 +319,7 @@ class Calendar extends React.Component {
     const { selectedDate, items } = this.state
     const renderer = this.props.itemRenderer || defaultItemRenderer
     const emptyListRenderer = this.props.emptyListRenderer || defaultEmptyListRenderer
-    const dayEvents = items[dateFns.format(selectedDate, 'YYYY-MM-DD')]
+    const dayEvents = items[dateFns.format(selectedDate, 'yyyy-MM-dd')]
     return dayEvents && dayEvents.items.length ? renderer(dayEvents, selectedDate, this.props.itemClickHandler) : emptyListRenderer(selectedDate)
   }
 

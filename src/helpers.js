@@ -1,9 +1,9 @@
 import React from 'react';
-import dateFns from 'date-fns';
+import * as dateFns from 'date-fns';
 import { View, Text, TouchableOpacity } from 'react-native'
 
 export const defaultEmptyListRenderer = (day) => {
-  return <Text>No items for this date ({dateFns.format(day, 'MM/DD/YYYY')})</Text>
+  return <Text>No items for this date ({dateFns.format(day, 'MM/dd/yyyy')})</Text>
 }
 
 export const defaultItemRenderer = (dayEvents, selectedDate, itemClickHandler) => {
